@@ -1,0 +1,22 @@
+
+table.ms{
+	table-layout: fixed;
+	text-align: center;
+}
+
+.cell{
+	background-color: #C9C9C9;
+	color: #C9C9C9;
+	border: outset #9F9F9F 5px;
+	font-family: monospace;
+	font-size: 30px;
+	cursor: pointer;
+}
+
+.cell:hover{
+	border-color: red;
+}
+
+.revealed{
+	border: solid #9F9F9F 1px;
+}
