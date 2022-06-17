@@ -17,10 +17,8 @@ HTMLElement.prototype.$ = function(...args){
 }
 
 const $id = document.getElementById;
-const $$class = document.getElementsByClassName;
-const $class = c => $$class(c)[0];
-const $$tag = document.getElementsByTagName;
-const $tag = t => $$tag(t)[0];
+const $class = document.getElementsByClassName;
+const $tag = document.getElementsByTagName;
 
 const pageName = window.location.pathname.split("/").pop().slice(0, -5);
 
