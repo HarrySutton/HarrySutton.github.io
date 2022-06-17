@@ -1,16 +1,22 @@
-function $(tag, attr = {}){
+function $(tag, attr = {}, chld = []){
     let element = document.createElement(tag);
+
     for (let [key, val] of Object.entries(attr)){
         if (val) element[key] = val
     };
+
+    for (let child of chld){
+        element.appendChild(child)
+    }
+
     return element
 }
 
-HTMLElement.prototype.$ = function(t, a){
-    this.appendChild($(t, a))
+HTMLElement.prototype.$ = function(...args){
+    this.appendChild($(...args))
 }
 
-const getPage = () => window.location.pathname.split("/").pop().slice(0, -5)
+const pageName = window.location.pathname.split("/").pop().slice(0, -5);
 
 const navdata = [
     {
@@ -36,7 +42,14 @@ for (let {name, link} of navdata){
         {
             innerHTML:  name,
             href:       link + ".html",
-            className:  getPage() == link? "active" : null
+            className:  link == pageName? "active" : null
         }
+    )
+}
+
+function projectsList(data){
+    return $(
+        "ul",
+        {className: "projects-list alternating-list"}
     )
 }
