@@ -12,10 +12,17 @@ function $(tag, attr = {}, chld = []){
     return element
 }
 
+function $$(data, render){
+    return data.map(render)
+}
+
 HTMLElement.prototype.$ = function(...args){
     this.appendChild($(...args))
 }
 
+HTMLElement.prototype.$$ = function(...args){
+    this.append(...$$(...args))
+}
 
 const pageName = window.location.pathname.split("/").pop().slice(0, -5);
 
@@ -35,10 +42,10 @@ const navdata = [
 ];
 
 const navbar = document.getElementsByTagName("nav")[0];
-navbar.innerHTML = "";
 
-for (let {name, link} of navdata){
-    navbar.$(
+navbar.$$(
+    navdata,
+    ({name, link}) => $(
         "a",
         {
             innerHTML:  name,
@@ -46,7 +53,7 @@ for (let {name, link} of navdata){
             className:  link == pageName? "active" : null
         }
     )
-}
+)
 
 function projectsList(data){
     return $(
