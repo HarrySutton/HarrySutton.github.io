@@ -16,9 +16,6 @@ HTMLElement.prototype.$ = function(...args){
     this.appendChild($(...args))
 }
 
-const $id = document.getElementById;
-const $class = document.getElementsByClassName;
-const $tag = document.getElementsByTagName;
 
 const pageName = window.location.pathname.split("/").pop().slice(0, -5);
 
@@ -37,7 +34,7 @@ const navdata = [
     },
 ];
 
-const navbar = $tag("nav")[0];
+const navbar = document.getElementsByTagName("nav")[0];
 navbar.innerHTML = "";
 
 for (let {name, link} of navdata){
