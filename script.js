@@ -1,31 +1,9 @@
-function $(tag, attr = {}, chld = []){
-    let element = document.createElement(tag);
+const scriptid = usePageScript();
 
-    for (let [key, val] of Object.entries(attr)){
-        if (val) element[key] = val
-    };
+console.log(PAGENAME)
+console.log(scriptid)
 
-    for (let child of chld){
-        element.appendChild(child)
-    }
-
-    return element
-}
-
-function $$(data, render){
-    return data.map(render)
-}
-
-HTMLElement.prototype.$ = function(...args){
-    this.appendChild($(...args))
-}
-
-HTMLElement.prototype.$$ = function(...args){
-    this.append(...$$(...args))
-}
-
-const pageName = window.location.pathname.split("/").pop().slice(0, -5);
-
+// Nav Bar
 const navdata = [
     {
         name: "Home",
@@ -41,23 +19,39 @@ const navdata = [
     },
 ];
 
-const navbar = document.getElementsByTagName("nav")[0];
-
-navbar.$$(
-    navdata,
-    ({name, link}) => $(
-        "a",
-        {
-            innerHTML:  name,
-            href:       link + ".html",
-            className:  link == pageName? "active" : null
-        }
-    )
+const navlink = ({name, link}) => $(
+    "a",
+    {
+        innerHTML:  name,
+        href:       link + ".html",
+        className:  link == PAGENAME? "active" : null
+    }
 )
 
-function projectsList(data){
-    return $(
-        "ul",
-        {className: "projects-list alternating-list"}
-    )
-}
+tag("nav")[0].append(...navdata.map(navlink));
+
+// Projects List
+const [project, projectlist] = datatype(
+    ["title", "desc", "imgsrc", "imgwidth"],
+    [null, null, src => "images/"+src, null]
+);
+
+const card = ({title, desc, imgsrc, imgwidth}) => $(
+    "li", {className: "card"}, [
+
+        $("div", {}, [
+            $("img", {src: imgsrc, width: imgwidth})
+        ]),
+
+        $("div", {}, [
+            $("h3", {innerHTML: title}),
+            $("p", {innerHTML: desc})
+        ])
+    ]
+)
+
+const projectslist = (data) => $(
+    "ul",
+    {className: "projects-list alternating-list"},
+    data.map(card)
+)
