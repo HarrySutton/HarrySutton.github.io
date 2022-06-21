@@ -343,13 +343,13 @@ function round(x, places){
  */
  function create(tag, inner = [], attributes = {}, style = {}){
 	let element = document.createElement(tag);
-	for (attribute in attributes){
+	for (let attribute in attributes){
 		element.setAttribute(attribute, attributes[attribute]);
 	};
-	for (property in style){
+	for (let property in style){
 		element.style.cssText += property + ":" + style[property] + ";";
 	};
-	for (item of inner){
+	for (let item of inner){
 		if (typeof item == "object"){
 			element.appendChild(item);
 		}else{

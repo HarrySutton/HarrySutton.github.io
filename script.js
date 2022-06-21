@@ -1,8 +1,5 @@
 const scriptid = usePageScript();
 
-console.log(PAGENAME)
-console.log(scriptid)
-
 // Nav Bar
 const navdata = [
     {
@@ -31,10 +28,10 @@ const navlink = ({name, link}) => $(
 tag("nav")[0].append(...navdata.map(navlink));
 
 // Projects List
-const [project, projectlist] = datatype(
+const [projectformatter, projectmultiformatter] = formatter(
     ["title", "desc", "imgsrc", "imgwidth"],
-    [null, null, src => "images/"+src, null]
-);
+    {2: src => "images/"+src}
+)
 
 const card = ({title, desc, imgsrc, imgwidth}) => $(
     "li", {className: "card"}, [
@@ -44,8 +41,8 @@ const card = ({title, desc, imgsrc, imgwidth}) => $(
         ]),
 
         $("div", {}, [
-            $("h3", {innerHTML: title}),
-            $("p", {innerHTML: desc})
+            $("h3", {}, [title]),
+            desc
         ])
     ]
 )
@@ -55,3 +52,5 @@ const projectslist = (data) => $(
     {className: "projects-list alternating-list"},
     data.map(card)
 )
+
+const appendprojects = appender(projectmultiformatter, projectslist)
