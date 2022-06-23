@@ -36,15 +36,15 @@
     return element
 }
 
-const id  = id  => document.getElementById(id)
-const cls = cls => document.getElementsByClassName(cls)
-const tag = tag => document.getElementsByTagName(tag)
+const $id  = id  => document.getElementById(id)
+const $cls = cls => document.getElementsByClassName(cls)
+const $tag = tag => document.getElementsByTagName(tag)
 
 /**
  * @const - Body element of the page
  * @type {HTMLElement}
  */
-const BODY = tag("body")[0];
+const BODY = $tag("body")[0];
 
 /**
  * @const - Name of current page without ".html"
@@ -58,22 +58,50 @@ const PAGENAME = window.location.pathname.split("/").pop().slice(0, -5);
  */
 const URLARGS = new URLSearchParams(window.location.search)
 
-function addScript(src, id = null, error = "No JS for this page"){
+/**
+ * Loads a JS file to the page
+ * @param {string} src - Path to JS file 
+ * @param {string} id - ID for the script tag
+ * @param {function} error - Function to call on error
+ * @returns {string|null} - ID if one was given, null if not
+ */
+function addScript(src, id = null, error = () => console.error(`JS file '${src}' not found`)){
     BODY.append($(
         "script",
         {
             id: id,
             src: src,
-            onerror: () => console.log(error)
+            onerror: () => {
+                error();
+                $id(id).remove()
+            }
         }
     ))
+    return id;
 };
 
 function usePageScript(){
-    let id = `pagescript-${PAGENAME}`;
-    addScript(`js/${PAGENAME}.js`, id);
-    return id
+    return addScript(
+        `js/${PAGENAME}.js`, 
+        `pagescript-${PAGENAME}`,
+        () => console.warn("No JS for this page")
+    );
 }
+
+Array.prototype.indexOfX = function(get, select){
+    let props = this.map(get);
+    return props.indexOf(select(...props))
+}
+
+// Array.prototype.prepend = function(item){
+//     this = [item].concat(this)
+// }
+
+// let list = [2, 3, 4]
+// list.prepend(1)
+// console.log(list)
+
+const def = (val, def) => val? val : def;
 
 /**
  * Iterates many lists at the same time
@@ -82,8 +110,7 @@ function usePageScript(){
  * @returns {any[][]}
  */
 function enumerate(lists, includeindex = false){
-    let lens = lists.map(l => l.length)
-    let index = lens.indexOf(Math.max(...lens));
+    let index = lists.indexOfX(l => l.length, Math.max);
 
     let list = [];
     for (let i = 0; i < lists[index].length; i++){
@@ -93,12 +120,18 @@ function enumerate(lists, includeindex = false){
     return list
 }
 
+/**
+ * 
+ * @param {string[]} keys - List of names of each property
+ * @param {object} formats - Functions to format a value, should be indexed with name of property
+ * @returns {function[]} - Functions to format a single item, and a list of items
+ */
 function formatter(keys, formats = {}){
 
     const single = (...vals) => {
         let obj = {};
-        for (let [key, val, i] of enumerate([keys, vals], true)){
-            obj[key] = formats[i]? formats[i](val) : val
+        for (let [key, val] of enumerate([keys, vals])){
+            obj[key] = formats[key]? formats[key](val) : val
         }
         return obj
     };
@@ -112,4 +145,16 @@ function formatter(keys, formats = {}){
 
 function appender(formatter, renderer, target = BODY){
     return (...data) => target.append(renderer(formatter(...data)))
+}
+
+/**
+ * 
+ * @param {Date} d - 
+ * @param {string} format - 
+ */
+function date(d, format){
+    let string = "";
+    for (let i = 0; i < format.length; i++){
+
+    }
 }

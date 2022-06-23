@@ -1,38 +1,38 @@
 @font-face {
     font-family: Nexa;
-    src: url(NexaFonts/NexaHeavy/font.woff);
+    src: url(fonts/NexaFonts/NexaHeavy/font.woff);
     font-weight: 900;
 }
 
 @font-face {
     font-family: Nexa;
-    src: url(NexaFonts/NexaLight/font.woff);
+    src: url(fonts/NexaFonts/NexaLight/font.woff);
     font-weight: 300;
 }
 
 @font-face {
     font-family: NexaText;
-    src: url(NexaFonts/NexaTextBold/font.woff);
+    src: url(fonts/NexaFonts/NexaTextBold/font.woff);
     font-weight: 700;
 }
 
 @font-face {
     font-family: NexaText;
-    src: url(NexaFonts/NexaTextBlack/font.woff);
+    src: url(fonts/NexaFonts/NexaTextBlack/font.woff);
     font-weight: 900;
 }
 
 @font-face {
     font-family: NexaText;
-    src: url(NexaFonts/NexaTextBook/font.woff);
+    src: url(fonts/NexaFonts/NexaTextBook/font.woff);
     font-weight: 200;
 }
 
 :root {
 	--red: 		#9b0f00;
 	--orange: 	#ff4c00;
-	--white: 	#f9f8f7;
 	--blue: 	#8bc3c5;
+	--white: 	#fffaf5;
 	--black: 	#000000;
 }
 
@@ -48,6 +48,7 @@
 body {
     background: var(--orange);
 	background: linear-gradient(135deg, var(--orange) 0%, var(--red) 100%);
+	color: var(--black);
 	/* animation: gradient 15s ease infinite; */
 	font-family: Nexa;
 	margin: 0;
@@ -75,8 +76,8 @@ main {
 
 a {
 	cursor: pointer;
-	color: var(--black);
 	text-decoration: none;
+	color: var(--black);
 }
 
 img {

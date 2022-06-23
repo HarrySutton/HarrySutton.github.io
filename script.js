@@ -25,12 +25,12 @@ const navlink = ({name, link}) => $(
     }
 )
 
-tag("nav")[0].append(...navdata.map(navlink));
+$tag("nav")[0].append(...navdata.map(navlink));
 
 // Projects List
 const [projectformatter, projectmultiformatter] = formatter(
     ["title", "desc", "imgsrc", "imgwidth"],
-    {2: src => "images/"+src}
+    {"imgsrc": src => "images/"+src}
 )
 
 const card = ({title, desc, imgsrc, imgwidth}) => $(
