@@ -1,4 +1,4 @@
-appendprojects(
+BODY.append(projectslist([
     [
         "Flood It",
         "My project for my application programming module. A mobile game for Android based on the game Flood It, programmed in Kotlin using Android Studio",
@@ -23,4 +23,4 @@ appendprojects(
         "instock.png",
         150
     ]
-)
+]))

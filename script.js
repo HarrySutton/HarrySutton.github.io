@@ -2,21 +2,12 @@ const scriptid = usePageScript();
 
 // Nav Bar
 const navdata = [
-    {
-        name: "Home",
-        link: "index"
-    },
-    {
-        name: "Projects",
-        link: "projects"
-    },
-    {
-        name: "Games",
-        link: "games"
-    },
+    ["Home",        "index"     ],
+    ["Projects",    "projects"  ],
+    ["Games",       "games"     ]
 ];
 
-const navlink = ({name, link}) => $(
+const navlink = ([name, link]) => $(
     "a",
     {
         innerHTML:  name,
@@ -27,13 +18,7 @@ const navlink = ({name, link}) => $(
 
 $tag("nav")[0].append(...navdata.map(navlink));
 
-// Projects List
-const [projectformatter, projectmultiformatter] = formatter(
-    ["title", "desc", "imgsrc", "imgwidth"],
-    {"imgsrc": src => "images/"+src}
-)
-
-const card = ({title, desc, imgsrc, imgwidth}) => $(
+const card = ([title, desc, imgsrc, imgwidth]) => $(
     "li", {className: "card"}, [
 
         $("div", {}, [
@@ -52,5 +37,3 @@ const projectslist = (data) => $(
     {className: "projects-list alternating-list"},
     data.map(card)
 )
-
-const appendprojects = appender(projectmultiformatter, projectslist)

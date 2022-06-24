@@ -101,8 +101,6 @@ Array.prototype.indexOfX = function(get, select){
 // list.prepend(1)
 // console.log(list)
 
-const def = (val, def) => val? val : def;
-
 /**
  * Iterates many lists at the same time
  * @param {any[][]} lists - List of lists to enumerate 
@@ -118,33 +116,6 @@ function enumerate(lists, includeindex = false){
         list.push(includeindex? entry.concat([i]) : entry)
     }
     return list
-}
-
-/**
- * 
- * @param {string[]} keys - List of names of each property
- * @param {object} formats - Functions to format a value, should be indexed with name of property
- * @returns {function[]} - Functions to format a single item, and a list of items
- */
-function formatter(keys, formats = {}){
-
-    const single = (...vals) => {
-        let obj = {};
-        for (let [key, val] of enumerate([keys, vals])){
-            obj[key] = formats[key]? formats[key](val) : val
-        }
-        return obj
-    };
-
-    const multi = (...lists) => {
-        return lists.map(list => single(...list))
-    }
-
-    return [single, multi]
-}
-
-function appender(formatter, renderer, target = BODY){
-    return (...data) => target.append(renderer(formatter(...data)))
 }
 
 /**
