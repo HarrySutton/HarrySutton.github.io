@@ -1,0 +1,11 @@
+body{
+    background-color: red;
+    color: yellow;
+}
+
+#title{
+    background-color: black;
+    color: white;
+    font-size: 80pt;
+    padding: 20px
+}
