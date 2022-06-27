@@ -61,7 +61,6 @@ function $$($){
         this.props = props;
 
         for (let [prop, arg] of enumerate([Object.keys(this.props), args])){
-            console.log(prop, arg)
             this.props[prop] = arg
         }
 
@@ -156,7 +155,6 @@ function usePageScript(){
 function enumerate(lists, includeindex = false){
     let maxLen = lists.indexOfX(l => l.length, Math.max);
 
-    console.log(lists)
     let list = [];
     for (let i = 0; i < lists[maxLen].length; i++){
         let entry = lists.map(l => l? l[i] : null)
