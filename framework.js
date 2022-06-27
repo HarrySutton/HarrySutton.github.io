@@ -7,6 +7,21 @@
 
 */
 
+Function.prototype.params = function(){
+    var fnStr = this.toString().replace(/((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg, '');
+    var arr = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match(/([^\s,]+)/g);
+    let result = [];
+    for (let item of arr){
+        result.push(item)
+    }
+    return result;
+}
+
+Array.prototype.indexOfX = function(get, select){
+    let props = this.map(get);
+    return props.indexOf(select(...props))
+}
+
 /**
  * Creates an HTML element
  * @param {string} tag - Tag of element
@@ -14,7 +29,7 @@
  * @param {HTMLElement|string[]} chld - List of child elements or text to append
  * @returns {HTMLElement} - HTML element
  */
- function $(tag, attr = {}, chld = []){
+function $(tag, attr = {}, chld = []){
     let element = document.createElement(tag);
     let style = {};
 
@@ -35,6 +50,40 @@
 
     return element
 }
+
+function $$($){
+    let props = {};
+    for (let param of $.params()){
+        props[param] = null;
+    }
+    return function(...args){
+        this.$ = $(...args);
+        this.props = props;
+
+        for (let [prop, arg] of enumerate([Object.keys(this.props), args])){
+            console.log(prop, arg)
+            this.props[prop] = arg
+        }
+
+        this.set = function(key, val){
+            this.props[key] = val;
+            let new$ = $(...Object.values(this.props))
+            this.$.parentNode.replaceChild(new$, this.$);
+        }
+        return this
+    }
+}
+
+let message = (name) => $("p", {style: {"color": "white"}}, [`Hello, ${name}`])
+
+let Thing = $$(message);
+
+let thing = new Thing("yes");
+
+document.getElementsByTagName("body")[0].append(thing.$)
+
+thing.set("name", "no");
+
 
 const $id  = id  => document.getElementById(id)
 const $cls = cls => document.getElementsByClassName(cls)
@@ -88,10 +137,7 @@ function usePageScript(){
     );
 }
 
-Array.prototype.indexOfX = function(get, select){
-    let props = this.map(get);
-    return props.indexOf(select(...props))
-}
+
 
 // Array.prototype.prepend = function(item){
 //     this = [item].concat(this)
@@ -108,14 +154,24 @@ Array.prototype.indexOfX = function(get, select){
  * @returns {any[][]}
  */
 function enumerate(lists, includeindex = false){
-    let index = lists.indexOfX(l => l.length, Math.max);
+    let maxLen = lists.indexOfX(l => l.length, Math.max);
 
+    console.log(lists)
     let list = [];
-    for (let i = 0; i < lists[index].length; i++){
+    for (let i = 0; i < lists[maxLen].length; i++){
         let entry = lists.map(l => l? l[i] : null)
         list.push(includeindex? entry.concat([i]) : entry)
     }
     return list
+}
+
+/**
+ * Calls a series of functions, each function using the result of the last as the parameter
+ * @param  {...any} funcs - Starting value, then functions to execute
+ * @returns {any} - Result of last function
+ */
+function pipe(...funcs){
+    return funcs.reduce((val, func) => func(val))
 }
 
 /**
