@@ -8,13 +8,12 @@
 */
 
 Function.prototype.params = function(){
-    var fnStr = this.toString().replace(/((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg, '');
-    var arr = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match(/([^\s,]+)/g);
-    let result = [];
-    for (let item of arr){
-        result.push(item)
+    let fnStr = this.toString().replace(/((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg, '');
+    let arr = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match(/([^\s,]+)/g);
+    while (arr.indexOf('=') != -1){
+        arr.splice(arr.indexOf('='), 2)
     }
-    return result;
+    return arr;
 }
 
 Array.prototype.indexOfX = function(get, select){
@@ -51,38 +50,33 @@ function $(tag, attr = {}, chld = []){
     return element
 }
 
-function $$($){
-    let props = {};
-    for (let param of $.params()){
-        props[param] = null;
-    }
-    return function(...args){
-        this.$ = $(...args);
-        this.props = props;
+function $$($component){
+    let $params = $component.params();
+    const $$component = function(...params){
+        let element = $component(...params);
 
-        for (let [prop, arg] of enumerate([Object.keys(this.props), args])){
-            this.props[prop] = arg
+        element.props = {};
+        for (let [prop, param] of enumerate([$params, params])){
+            element.props[prop] = param
+        }
+        
+        element.set = function(prop, val){
+            this.props[prop] = val;
+            this.parentNode.replaceChild($component(...Object.values(this.props)), this);
         }
 
-        this.set = function(key, val){
-            this.props[key] = val;
-            let new$ = $(...Object.values(this.props))
-            this.$.parentNode.replaceChild(new$, this.$);
-        }
-        return this
+        return element
     }
+    return $$component
 }
 
-let message = (name) => $("p", {style: {"color": "white"}}, [`Hello, ${name}`])
+const $message = (name = "world") => $("p", {className: "message"}, [`Hello ${name}!`])
 
-let Thing = $$(message);
+const $$message = $$($message);
 
-let thing = new Thing("yes");
+const message = $$message("");
 
-document.getElementsByTagName("body")[0].append(thing.$)
-
-thing.set("name", "no");
-
+message.set("name", null)
 
 const $id  = id  => document.getElementById(id)
 const $cls = cls => document.getElementsByClassName(cls)
