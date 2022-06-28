@@ -53,6 +53,7 @@ function $(tag, attr = {}, chld = []){
 function $$($component){
     let $params = $component.params();
     const $$component = function(...params){
+
         let element = $component(...params);
 
         element.props = {};
@@ -64,17 +65,26 @@ function $$($component){
             this.props[prop] = val;
             this.parentNode.replaceChild($component(...Object.values(this.props)), this);
         }
-
+        
         return element
     }
     return $$component
 }
 
-const $message = (name = "world") => $("p", {className: "message"}, [`Hello ${name}!`])
+const $message = (name = "world") => $(
+    "p", 
+    {
+        className: "message",
+        onclick: function(e){console.log(e)}
+    }, 
+    [`Hello ${name}!`]
+)
 
 const $$message = $$($message);
 
 const message = $$message("");
+
+document.getElementsByTagName("body")[0].append(message)
 
 message.set("name", null)
 
@@ -159,7 +169,7 @@ function enumerate(lists, includeindex = false){
 
 /**
  * Calls a series of functions, each function using the result of the last as the parameter
- * @param  {...any} funcs - Starting value, then functions to execute
+ * @param  {...Function|any} funcs - Starting value, then functions to execute
  * @returns {any} - Result of last function
  */
 function pipe(...funcs){
