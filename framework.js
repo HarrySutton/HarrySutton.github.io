@@ -7,6 +7,20 @@
 
 */
 
+Function.prototype.params = function(){
+    let fnStr = this.toString().replace(/((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg, '');
+    let arr = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match(/([^\s,]+)/g);
+    while (arr.indexOf('=') != -1){
+        arr.splice(arr.indexOf('='), 2)
+    }
+    return arr;
+}
+
+Array.prototype.indexOfX = function(get, select){
+    let props = this.map(get);
+    return props.indexOf(select(...props))
+}
+
 /**
  * Creates an HTML element
  * @param {string} tag - Tag of element
@@ -14,7 +28,7 @@
  * @param {HTMLElement|string[]} chld - List of child elements or text to append
  * @returns {HTMLElement} - HTML element
  */
- function $(tag, attr = {}, chld = []){
+function $(tag, attr = {}, chld = []){
     let element = document.createElement(tag);
     let style = {};
 
@@ -35,6 +49,44 @@
 
     return element
 }
+
+function $$($component){
+    let $params = $component.params();
+    const $$component = function(...params){
+
+        let element = $component(...params);
+
+        element.props = {};
+        for (let [prop, param] of enumerate([$params, params])){
+            element.props[prop] = param
+        }
+        
+        element.set = function(prop, val){
+            this.props[prop] = val;
+            this.parentNode.replaceChild($component(...Object.values(this.props)), this);
+        }
+        
+        return element
+    }
+    return $$component
+}
+
+const $message = (name = "world") => $(
+    "p", 
+    {
+        className: "message",
+        onclick: function(e){console.log(e)}
+    }, 
+    [`Hello ${name}!`]
+)
+
+const $$message = $$($message);
+
+const message = $$message("");
+
+document.getElementsByTagName("body")[0].append(message)
+
+message.set("name", null)
 
 const $id  = id  => document.getElementById(id)
 const $cls = cls => document.getElementsByClassName(cls)
@@ -88,10 +140,7 @@ function usePageScript(){
     );
 }
 
-Array.prototype.indexOfX = function(get, select){
-    let props = this.map(get);
-    return props.indexOf(select(...props))
-}
+
 
 // Array.prototype.prepend = function(item){
 //     this = [item].concat(this)
@@ -108,14 +157,23 @@ Array.prototype.indexOfX = function(get, select){
  * @returns {any[][]}
  */
 function enumerate(lists, includeindex = false){
-    let index = lists.indexOfX(l => l.length, Math.max);
+    let maxLen = lists.indexOfX(l => l.length, Math.max);
 
     let list = [];
-    for (let i = 0; i < lists[index].length; i++){
+    for (let i = 0; i < lists[maxLen].length; i++){
         let entry = lists.map(l => l? l[i] : null)
         list.push(includeindex? entry.concat([i]) : entry)
     }
     return list
+}
+
+/**
+ * Calls a series of functions, each function using the result of the last as the parameter
+ * @param  {...Function|any} funcs - Starting value, then functions to execute
+ * @returns {any} - Result of last function
+ */
+function pipe(...funcs){
+    return funcs.reduce((val, func) => func(val))
 }
 
 /**
