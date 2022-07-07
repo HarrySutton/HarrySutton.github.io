@@ -7,13 +7,28 @@
 
 */
 
+function parse(x){
+    try{
+        return Number.parseFloat(x) ?? 
+                x == "true"  ? true  : null ?? 
+                x == "false" ? false : null ?? 
+                JSON.parse(x)
+    }catch{
+        return x
+    }
+   
+}
+
 Function.prototype.params = function(){
     let fnStr = this.toString().replace(/((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg, '');
-    let arr = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match(/([^\s,]+)/g);
-    while (arr.indexOf('=') != -1){
-        arr.splice(arr.indexOf('='), 2)
+    let params = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match(/([^\s,]+)/g);
+    defaults = [];
+    while (params.indexOf('=') != -1){
+        let val = params[params.indexOf('=') + 1]
+        defaults.push(parse(val) ?? val);
+        params.splice(params.indexOf('='), 2)
     }
-    return arr;
+    return [params, defaults];
 }
 
 Array.prototype.indexOfX = function(get, select){
@@ -28,7 +43,7 @@ Array.prototype.indexOfX = function(get, select){
  * @param {HTMLElement|string[]} chld - List of child elements or text to append
  * @returns {HTMLElement} - HTML element
  */
-function $(tag, attr = {}, chld = []){
+function $(tag, attr = {}, chld = [], listeners = []){
     let element = document.createElement(tag);
     let style = {};
 
@@ -47,14 +62,27 @@ function $(tag, attr = {}, chld = []){
 		element.style.cssText += `${property}: ${style[property]}; `
 	};
 
+    for (let [type, listener] of listeners){
+        element.addEventListener(type, function(e){
+            listener(e, element)
+        })
+    }
+
     return element
 }
 
-function $$($component){
-    let $params = $component.params();
-    const $$component = function(...params){
+/**
+ * 
+ * @param {function} $_ - Function that returns an HTMLElement object
+ * @returns {function}
+ */
+function $$($_){
+    let [$params, $defaults] = $_.params();
+    function $$_(...params){
 
-        let element = $component(...params);
+        params = params.concat($defaults).slice(0, $params.length);
+
+        let element = $_(...params);
 
         element.props = {};
         for (let [prop, param] of enumerate([$params, params])){
@@ -63,30 +91,14 @@ function $$($component){
         
         element.set = function(prop, val){
             this.props[prop] = val;
-            this.parentNode.replaceChild($component(...Object.values(this.props)), this);
+            element = $$_(...Object.values(this.props))
+            this.parentNode.replaceChild(element, this);
         }
         
         return element
     }
-    return $$component
+    return $$_
 }
-
-const $message = (name = "world") => $(
-    "p", 
-    {
-        className: "message",
-        onclick: function(e){console.log(e)}
-    }, 
-    [`Hello ${name}!`]
-)
-
-const $$message = $$($message);
-
-const message = $$message("");
-
-document.getElementsByTagName("body")[0].append(message)
-
-message.set("name", null)
 
 const $id  = id  => document.getElementById(id)
 const $cls = cls => document.getElementsByClassName(cls)
