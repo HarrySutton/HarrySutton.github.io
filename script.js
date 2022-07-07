@@ -7,7 +7,7 @@ const navdata = [
     ["Games",       "games"     ]
 ];
 
-const navlink = ([name, link]) => $(
+const $navlink = (name, link) => $(
     "a",
     {
         innerHTML:  name,
@@ -16,9 +16,9 @@ const navlink = ([name, link]) => $(
     }
 )
 
-$tag("nav")[0].append(...navdata.map(navlink));
+$tag("nav")[0].append(...navdata.map(data => $navlink(...data)));
 
-const card = ([title, desc, imgsrc, imgwidth]) => $(
+const card = (title, desc, imgsrc, imgwidth) => $(
     "li", {className: "card"}, [
 
         $("div", {}, [
@@ -32,8 +32,10 @@ const card = ([title, desc, imgsrc, imgwidth]) => $(
     ]
 )
 
+$$$(card);
+
 const projectslist = (data) => $(
     "ul",
     {className: "projects-list alternating-list"},
-    data.map(card)
+    data.map(data => card(...data))
 )

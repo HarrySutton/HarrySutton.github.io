@@ -100,6 +100,35 @@ function $$($_){
     return $$_
 }
 
+<<<<<<< Updated upstream
+=======
+function $$$(tag, $component){
+
+    customElements.define(
+        tag, 
+        class extends HTMLElement{
+            constructor(){
+                super();
+                this.attachShadow({mode: 'open'});
+
+                let props = $$$.params();
+
+                this.shadowRoot.append(
+                    $$$(...props.map(prop => {
+                        this.getAttribute(prop)
+                    }))
+                )
+            }
+        }
+    )
+
+    return [
+        (...props) => $(tag, ),
+        (...props) => $$()
+    ]
+}
+
+>>>>>>> Stashed changes
 const $id  = id  => document.getElementById(id)
 const $cls = cls => document.getElementsByClassName(cls)
 const $tag = tag => document.getElementsByTagName(tag)
