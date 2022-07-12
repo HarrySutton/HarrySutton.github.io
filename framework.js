@@ -100,7 +100,7 @@ function $$($_){
     return $$_
 }
 
-function $$$(tag, $component){
+function $$$(tag, $_){
 
     customElements.define(
         tag, 
@@ -109,10 +109,10 @@ function $$$(tag, $component){
                 super();
                 this.attachShadow({mode: 'open'});
 
-                let props = $$$.params();
+                let props = $_.params();
 
                 this.shadowRoot.append(
-                    $$$(...props.map(prop => {
+                    $_(...props.map(prop => {
                         this.getAttribute(prop)
                     }))
                 )
@@ -123,7 +123,7 @@ function $$$(tag, $component){
     return [
         (...props) => $(tag, ),
         (...props) => $$()
-    ]
+    ]    
 }
 
 function f(string = ""){
