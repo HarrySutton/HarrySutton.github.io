@@ -100,8 +100,6 @@ function $$($_){
     return $$_
 }
 
-<<<<<<< Updated upstream
-=======
 function $$$(tag, $component){
 
     customElements.define(
@@ -128,7 +126,13 @@ function $$$(tag, $component){
     ]
 }
 
->>>>>>> Stashed changes
+function f(string = ""){
+    let sects = string.split("?");
+    return (...params) => {
+        return enumerate([sects, params]).map(([sect, param]) => sect + param).join()
+    }
+}
+
 const $id  = id  => document.getElementById(id)
 const $cls = cls => document.getElementsByClassName(cls)
 const $tag = tag => document.getElementsByTagName(tag)
