@@ -28,7 +28,7 @@ Function.prototype.params = function(){
         defaults.push(parse(val) ?? val);
         params.splice(params.indexOf('='), 2)
     }
-    return [params, defaults];
+    return [params, defaults, params.indexOf('...') != -1];
 }
 
 Array.prototype.indexOfX = function(get, select){
@@ -232,3 +232,10 @@ function date(d, format){
 
     }
 }
+
+$$counter = $$((count = 0) => $(
+    "button",
+    {},
+    [`Count: ${count}`],
+    [['click', (e, $) => $.set("count", count + 1)]]
+))
