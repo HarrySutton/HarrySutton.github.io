@@ -22,3 +22,19 @@ obj("b")("set")("a", 6)
 print(obj("b")("a"))
 
 print(obj("a"))
+
+class LimitedInt:
+    def __init__(self, val, min, max):
+        self.val = val
+        self.min = min
+        self.max = max
+
+    def _normalise(self):
+        if self.val > self.max:
+            self.val /= self.max
+    def __add__(self, other):
+        self.val += other
+
+class Enum:
+    def __init__(self, *items):
+        self.items = items

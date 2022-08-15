@@ -1,20 +1,14 @@
-namespace yes{
-    
-}
-
 class JSS{
 
-    root: HTMLElement
+    elements: HTMLCollection
 
-    [index: number]: HTMLElement;    
-
-    constructor(root: HTMLElement){
-        this.root = root;
+    constructor(elements: HTMLCollection){
+        this.elements = elements;
         return this
     }
 
     tag(tag: string){
-
+        
     }
 
     // .
@@ -50,8 +44,12 @@ class JSS{
     after(){
 
     }
+
+    select(select: string){
+        this
+    }
 }
 
 HTMLCollection
 
-const jss = new JSS(document.documentElement);
+const jss = new JSS(document.documentElement.children);
