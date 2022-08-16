@@ -42,7 +42,6 @@ class JSS{
 
     // +
     after(){
-
     }
 
     select(select: string){
@@ -50,6 +49,17 @@ class JSS{
     }
 }
 
-HTMLCollection
+interface ThingMap{
+    "yes": number,
+    "no": string
+}
+
+function yee<T extends keyof ThingMap>(thing: T, other: ThingMap[T]){
+    return [thing, other]
+}
+
+// document.getElementById()?.addEventListener
+
+yee("no", "hi")
 
 const jss = new JSS(document.documentElement.children);
