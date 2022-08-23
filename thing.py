@@ -14,6 +14,14 @@ def Class(a, b):
 
     return getter
 
+def output(func):
+    def wrapper(*args, **kwargs):
+        val = func(*args, **kwargs)
+        print(val)
+        return val
+    return wrapper
+
+
 def __(meth):
     def _(ref, other):
         if type(other) == "int":
@@ -39,6 +47,35 @@ class Enum:
     def __init__(self, *items):
         self.items = items
 
+def repeat(n = 2):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for _ in range(n):
+                func(*args, **kwargs)
+        return wrapper
+    return decorator
+    
+class Cache:
+    def __init__(self, func):
+        self.func = func
+        self.cache = dict()
+
+    def __call__(self, *args, **kwargs):
+        key = str((args, kwargs))
+        if key in self.cache:
+            return self.cache[key]
+        else:
+            val = self.func(*args, **kwargs)
+            self.cache[key] = val
+            return val
+
+@Cache
+def fib(n):
+    if n == 1 or n == 2:
+        return 1
+    else:
+        return fib(n - 1) + fib(n - 2)
+
 class Count:
     def __init__(self, func):
         self.func = func
@@ -48,7 +85,8 @@ class Count:
         self.count += 1
         return self.func(*args, **kwargs)
 
-
+    def __str__(self):
+        return 
 
 @Count
 def sayHi():

@@ -58,6 +58,4 @@ function yee(thing: ThingMap){
 
 // document.getElementById()?.addEventListener
 
-yee("hoi")
-
 const jss = new JSS(document.documentElement.children);
