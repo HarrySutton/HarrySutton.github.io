@@ -46,10 +46,9 @@
 }
 
 body {
-    background: var(--orange);
-	background: linear-gradient(135deg, var(--orange) 0%, var(--red) 100%);
+    /* background: var(--orange);
+	background: linear-gradient(135deg, var(--orange) 0%, var(--red) 100%); */
 	color: var(--black);
-	/* animation: gradient 15s ease infinite; */
 	font-family: Nexa;
 	margin: 0;
 	height: 100vh;

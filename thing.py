@@ -14,14 +14,13 @@ def Class(a, b):
 
     return getter
 
-obj = Class(1, Class(3, 4))
-
-
-obj("b")("set")("a", 6)
-
-print(obj("b")("a"))
-
-print(obj("a"))
+def __(meth):
+    def _(ref, other):
+        if type(other) == "int":
+            meth(ref, other)
+        elif type(other) == "float":
+            meth(ref, int(other))
+    return _
 
 class LimitedInt:
     def __init__(self, val, min, max):
@@ -32,9 +31,32 @@ class LimitedInt:
     def _normalise(self):
         if self.val > self.max:
             self.val /= self.max
+
     def __add__(self, other):
         self.val += other
 
 class Enum:
     def __init__(self, *items):
         self.items = items
+
+class Count:
+    def __init__(self, func):
+        self.func = func
+        self.count = 0
+
+    def __call__(self, *args, **kwargs):
+        self.count += 1
+        return self.func(*args, **kwargs)
+
+
+
+@Count
+def sayHi():
+    print("Hi")
+
+sayHi()
+sayHi()
+sayHi()
+sayHi()
+
+print(sayHi.count)

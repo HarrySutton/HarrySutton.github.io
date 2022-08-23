@@ -120,10 +120,7 @@ function $$$(tag, $_){
         }
     )
 
-    return [
-        (...props) => $(tag, ),
-        (...props) => $$()
-    ]    
+    return (...props) => $(tag, ) 
 }
 
 function f(string = ""){

@@ -1,3 +1,26 @@
+type Params = [
+    /** List of all parameter names */
+    string[],
+    any[],
+    boolean
+]
+
+type $__ = (args: any) => HTMLElement
+
+function params(func: Function): Params{
+    let fnStr = func.toString().replace(/((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg, '');
+    let params = <string[]> fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match(/([^\s,]+)/g);
+    let defaults: any[] = [];
+    while (params.indexOf('=') != -1){
+        let val = params[params.indexOf('=') + 1]
+        defaults.push(parse(val) ?? val);
+        params.splice(params.indexOf('='), 2)
+    }
+    return [params, defaults, params.indexOf('...') != -1];
+}
+
+
+
 type Listener<E extends keyof HTMLElementEventMap, T> = [
     E,
     (e: HTMLElementEventMap[E], element: T) => void

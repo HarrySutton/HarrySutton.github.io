@@ -49,17 +49,15 @@ class JSS{
     }
 }
 
-interface ThingMap{
-    "yes": number,
-    "no": string
-}
+const list = ["yes", "no"] as const
+type ThingMap = typeof list[number]
 
-function yee<T extends keyof ThingMap>(thing: T, other: ThingMap[T]){
-    return [thing, other]
+function yee(thing: ThingMap){
+    return [thing]
 }
 
 // document.getElementById()?.addEventListener
 
-yee("no", "hi")
+yee("hoi")
 
 const jss = new JSS(document.documentElement.children);

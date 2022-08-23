@@ -1,12 +1,16 @@
 
 
 const $counter = (val = 0) => $(
-    "p", 
-    {}, 
+    "button", 
+    {className: "yes"}, 
     [`Count: ${val}!`],
     [
         ["click", function(e, $){
             $.set("val", $.props.val + 1)
+        }],
+        ["contextmenu", function(e, $){
+            e.preventDefault();
+            $.set("val", $.props.val - 1)
         }]
     ]
 )
