@@ -62,12 +62,19 @@ class Cache:
 
     def __call__(self, *args, **kwargs):
         key = str((args, kwargs))
+
         if key in self.cache:
             return self.cache[key]
+
         else:
             val = self.func(*args, **kwargs)
             self.cache[key] = val
             return val
+
+    def __str__(self):
+        for args in self.cache:
+            val = self.cache[args]
+            print(args, val)
 
 @Cache
 def fib(n):
@@ -75,6 +82,10 @@ def fib(n):
         return 1
     else:
         return fib(n - 1) + fib(n - 2)
+
+print(fib(40))
+
+print(fib)
 
 class Count:
     def __init__(self, func):
@@ -85,16 +96,6 @@ class Count:
         self.count += 1
         return self.func(*args, **kwargs)
 
-    def __str__(self):
-        return 
-
 @Count
 def sayHi():
     print("Hi")
-
-sayHi()
-sayHi()
-sayHi()
-sayHi()
-
-print(sayHi.count)
