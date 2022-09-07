@@ -71,11 +71,6 @@ class Cache:
             self.cache[key] = val
             return val
 
-    def __str__(self):
-        for args in self.cache:
-            val = self.cache[args]
-            print(args, val)
-
 @Cache
 def fib(n):
     if n == 1 or n == 2:
@@ -83,9 +78,6 @@ def fib(n):
     else:
         return fib(n - 1) + fib(n - 2)
 
-print(fib(40))
-
-print(fib)
 
 class Count:
     def __init__(self, func):
