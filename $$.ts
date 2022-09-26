@@ -84,6 +84,39 @@ function $$ts($_: (...params: any[]) => HTMLElement){
     return $$_
 }
 
+const breakpoints = {
+    xs: 0,
+    sm: 1,
+    md: 2,
+    lg: 3,
+    xl: 4,   
+} as const
+
+function $responsive(
+    $_: () => HTMLElement,
+    components: {
+        sm?: () => HTMLElement,
+        md?: () => HTMLElement,
+        lg?: () => HTMLElement,
+        xl?: () => HTMLElement,
+    } = {}
+): HTMLElement {
+    if (screen.width < breakpoints.sm) return $_()
+
+    for (let [bp, w] of Object.entries(breakpoints)){
+        if (screen.width >= w && bp in components) return components[bp]()
+    }
+
+    return $_()
+}
+
+const $card = () => $responsive(
+    () => $("div"),
+    {
+
+    }
+)
+
 let thing = new HTMLElement()
 
 $ts("canvas", {}, [], [["click", (e, el) => {}]])
