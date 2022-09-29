@@ -19,6 +19,9 @@ function params(func: Function): Params{
     return [params, defaults, params.indexOf('...') != -1];
 }
 
+function swapElement(a: HTMLElement, b: HTMLElement){
+    a.parentNode?.replaceChild(b, a);
+}
 
 
 type Listener<E extends keyof HTMLElementEventMap, T> = [
@@ -29,9 +32,9 @@ type Listener<E extends keyof HTMLElementEventMap, T> = [
 
 function $ts<T extends keyof HTMLElementTagNameMap>(
     tag: T,
-    attr, 
-    chld: Array<string | HTMLElement>, 
-    listeners: Listener<keyof HTMLElementEventMap, HTMLElementTagNameMap[T]>[]
+    attr: keyof typeof HTMLElementTagNameMap[T], 
+    chld: Array<string | HTMLElement> = [], 
+    listeners: Listener<keyof HTMLElementEventMap, HTMLElementTagNameMap[T]>[] = []
 ){
     let element = document.createElement(tag);
     let style = {};
@@ -75,13 +78,16 @@ function $$ts($_: (...params: any[]) => HTMLElement){
         
         element.set = function(prop, val){
             this.props[prop] = val;
-            element = $$_(...Object.values(this.props))
-            this.parentNode.replaceChild(element, this);
+            swapElement(this, $$_(...Object.values(this.props)))
         }
         
         return element
     }
     return $$_
+}
+
+function doubleDollar(func: ($: typeof $ts) => any){
+    return func($ts)
 }
 
 const breakpoints = {
@@ -120,3 +126,41 @@ const $card = () => $responsive(
 let thing = new HTMLElement()
 
 $ts("canvas", {}, [], [["click", (e, el) => {}]])
+
+/**
+ * Asynchronously pauses execution
+ * @param t - Time to pause in milliseconds
+ * @returns Promise that resolves after given time
+ */
+const pause = (t: number) => new Promise((r: (x: number) => void ) => setTimeout(r, t));
+
+class $$__ extends Magic{
+    el: HTMLElement;
+
+    constructor(el: HTMLElement){
+        super()
+        this.el = el
+    }
+
+    style(property: keyof CSSStyleDeclaration, value: string | null = null){
+        if (value){
+            this.el.style[property] = value
+        }else{
+            return this.el.style.alignItems
+        }
+    }
+
+    __call__(id: string){
+        return new $$__(document.getElementById(id))
+    }
+}
+
+let yes = new $$__(document.getElementById("yes"))
+
+yes.style("borderBlockColor")
+
+class $$$__ extends $$__{
+    constructor
+}
+
+const $_ = new $$__(document.documentElement)
