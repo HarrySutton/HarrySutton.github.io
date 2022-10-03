@@ -43,7 +43,7 @@ Array.prototype.indexOfX = function(get, select){
  * @param {HTMLElement|string[]} chld - List of child elements or text to append
  * @returns {HTMLElement} - HTML element
  */
-function $(tag, attr = {}, chld = [], listeners = []){
+function $(tag, attr = {}, inner = []){
     let element = document.createElement(tag);
     let style = {};
 
@@ -56,7 +56,7 @@ function $(tag, attr = {}, chld = [], listeners = []){
         if (val) element[key] = val
     };
 
-    element.append(...chld);
+    element.append(...inner);
 
     for (let property in style){
 		element.style.cssText += `${property}: ${style[property]}; `
@@ -133,12 +133,6 @@ function f(string = ""){
 const $id  = id  => document.getElementById(id)
 const $cls = cls => document.getElementsByClassName(cls)
 const $tag = tag => document.getElementsByTagName(tag)
-
-/**
- * @const - Body element of the page
- * @type {HTMLElement}
- */
-const BODY = $tag("body")[0];
 
 /**
  * @const - Name of current page without ".html"
@@ -218,16 +212,48 @@ function pipe(...funcs){
     return funcs.reduce((val, func) => func(val))
 }
 
+function lastDigit(x){
+    return Math.floor(((x / 10) % 1) * 10)
+}
+
 /**
  * 
  * @param {Date} d - 
  * @param {string} format - 
  */
 function date(d, format){
-    let string = "";
-    for (let i = 0; i < format.length; i++){
+    return format.split("").map(char => {
 
-    }
+        switch (char){
+            case "d":
+                return d.getDate().toString().padStart(2, "0")
+
+            case "D":
+                return ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][d.getDay()]
+
+            case "j": 
+                return d.getDate()
+
+            case "l":
+                return ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][d.getDay()]
+
+            case "N":
+                return d.getDay() + 1
+
+            case "S":
+                return ["th", "st", "nd", "rd", "th"][Math.min(lastDigit(d.getDate()), 4)]
+
+            case "w":
+                return d.getDay()
+
+            case "z":
+                return [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31].slice(0, d.getMonth() - 1).reduce((a, b) => a + b) + d.getDate() + ((d.getFullYear() % 4 == 0 && d.getMonth > 1)? 1 : 0)
+
+            case "":
+            default:
+                return char
+        }
+    }).join("")
 }
 
 $$counter = $$((count = 0) => $(
@@ -236,3 +262,48 @@ $$counter = $$((count = 0) => $(
     [`Count: ${count}`],
     [['click', (e, $) => $.set("count", count + 1)]]
 ))
+
+function $carousel(id, content, {controls = false, indicators = false, slide = -1}){
+    let carousel = $("div", {id: id, className: "carousel"});
+
+    carousel.active = 0;
+
+    carousel.slide = to => {
+        $id(`carousel-item-${to}`).
+
+        car
+    }
+
+    if (controls){
+        carousel.append(
+            $("button", {class}),
+            $("button")
+        )
+    }
+
+    if (indicators){
+        carousel.append($(
+            "div", 
+            {className: "carousel-indicators"}, 
+            Array.from({length: content.length}, i => {
+                return $("button")
+            })
+        ))
+    }
+
+    carousel.append($(
+        "div", 
+        {className: "carousel-content"}, 
+        content.map((item, i) => {
+            return $(
+                "div", 
+                {id: `carousel-item-${i}`, className: "carousel-item"}, 
+                [item]
+            )
+        })
+    ))
+
+    carousel.slide(0)
+
+    return carousel
+}

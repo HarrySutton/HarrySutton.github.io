@@ -74,7 +74,5 @@ class $__ extends Magic{
 
 const $ = new $__(document.documentElement)
 
-const func = Function("a", "b", "return a + b");
-
 
 
