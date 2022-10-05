@@ -1,26 +1,5 @@
 
 
-const $counter = (val = 0) => $(
-    "button", 
-    {className: "yes"}, 
-    [`Count: ${val}!`],
-    [
-        ["click", function(e, $){
-            $.set("val", $.props.val + 1)
-        }],
-        ["contextmenu", function(e, $){
-            e.preventDefault();
-            $.set("val", $.props.val - 1)
-        }]
-    ]
-)
-
-const $$counter = $$($counter);
-
-const counter = $$counter();
-
-BODY.append(counter)
-
 class Magic extends Function{
     constructor(){
         super('...args', 'return this._bound.__call__(...args)')
@@ -72,7 +51,21 @@ class $__ extends Magic{
     }
 }
 
-const $ = new $__(document.documentElement)
+const functions = [
+    "yes"
+]
 
+const text = document.getElementById("ta");
 
+text.onkeyup = function(e){
+    let inner = this.innerHTML.split(" ");
 
+    inner = inner.map(word => {
+        if (word in functions){
+            return `<span class="func">${word}</span>`
+        }
+        return word
+    })
+
+    this.innerHTML = inner.join(" ")
+}
