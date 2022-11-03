@@ -29,7 +29,7 @@ modal.addEventListener("click", e => {
     modal.style.visibility = "hidden";
 })
 
-document.querySelectorAll("img").forEach(img => {
+document.querySelectorAll("img:not(.modal *)").forEach(img => {
     img.addEventListener("click", e => {
 
         modalcap.innerHTML = e.target.alt
