@@ -1,31 +1,13 @@
 @font-face {
     font-family: Nexa;
     src: url(fonts/NexaFonts/NexaHeavy/font.woff);
-    font-weight: 900;
+    font-weight: bold;
 }
 
 @font-face {
     font-family: Nexa;
     src: url(fonts/NexaFonts/NexaLight/font.woff);
-    font-weight: 300;
-}
-
-@font-face {
-    font-family: NexaText;
-    src: url(fonts/NexaFonts/NexaTextBold/font.woff);
-    font-weight: 700;
-}
-
-@font-face {
-    font-family: NexaText;
-    src: url(fonts/NexaFonts/NexaTextBlack/font.woff);
-    font-weight: 900;
-}
-
-@font-face {
-    font-family: NexaText;
-    src: url(fonts/NexaFonts/NexaTextBook/font.woff);
-    font-weight: 200;
+    font-weight: normal;
 }
 
 :root {
@@ -58,9 +40,7 @@ body {
 }
 
 main {
-    background-color: var(--white);
-	margin: 0 10%;
-	height: 100%
+	margin: 1em 13%;
 }
 
 a {
@@ -68,7 +48,6 @@ a {
 	text-decoration: none;
 	color: var(--blue);
 }
-
 a:hover{
 	text-decoration: underline 2px;
 }
@@ -77,9 +56,16 @@ img {
 	margin: 10px;
 	max-width: 100%;
 }
-
 img:not(.modal *):hover{
 	outline: 2px solid var(--blue);
+}
+
+ul, ul ul{
+	list-style-type: square;
+}
+
+li::marker{
+	rotate: 45deg;
 }
 
 nav {
@@ -89,55 +75,45 @@ nav {
 	margin: 5px;
 	margin-right: 10px;
 }
-
 nav.single{
 	width: fit-content;
 }
-
 nav a {
 	flex: 1;
-	font-weight: 900;
+	font-weight: bold;
 	margin: 0;
-}
-
-.center {
-	text-align: center;
+	text-decoration: none;
+	position: relative;
 }
 
 .card{
 	padding: 10px;
-	border: 1px solid var(--black);
+	border: 2px solid var(--black);
 	border-radius: 5px;
 	color: var(--black);
-	background-color: var(--white);
-	text-decoration: none;
-	box-shadow: 5px 5px 0px 0px var(--black), 2px 2px 0px 0px var(--black);
-	position: relative;
+	background-color: var(--white);	
 }
-
+.card.press{
+	box-shadow: 5px 5px 0px 0px var(--black), 2px 2px 0px 0px var(--black);
+}
 .card.press:hover{
 	box-shadow: 2px 2px 0px 0px var(--black);
 	transform: translateX(3px) translateY(3px);
 	text-decoration: none;
 }
-
 .card.press:active, .card.press.active{
 	box-shadow: none;
 	transform: translateX(5px) translateY(5px);
 }
 
 .projects-list {
-	margin: 0 13%;
-	font-weight: 200;
 	padding: 0;
 	margin-bottom: 20px;
 }
-
 .projects-list li {
 	justify-content: space-between;
-	margin-top: 10px;
+	margin-bottom: 10px;
 }
-
 .projects-list li div {
 	display: flex;
 	flex-direction: column;
@@ -151,7 +127,6 @@ nav a {
     display: flex;
     flex-direction: row;
 }
-
 .alternating-list li:nth-child(even){
     flex-direction: row-reverse;
 }
@@ -172,12 +147,10 @@ nav a {
 	background-color: rgba(0, 0, 0, 0.7);
 	transition: opacity 0.4s;
 }
-
 .modal img{
 	max-height: 80%;
 	max-width: 90%;
 }
-
 .modal p{
 	color: var(--white);
 	font-weight: bold;
@@ -188,7 +161,6 @@ canvas{
 	background-color: #000000;
 	margin: auto;
 }
-
 div:has(canvas){
 	width: 100%;
 	padding-top: 100px;
