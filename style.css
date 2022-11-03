@@ -46,25 +46,13 @@
 }
 
 body {
-    /* background: var(--orange);
-	background: linear-gradient(135deg, var(--orange) 0%, var(--red) 100%); */
+    background: var(--orange);
+	background: linear-gradient(135deg, var(--orange) 0%, var(--red) 100%);
 	color: var(--black);
 	font-family: Nexa;
 	margin: 0;
 	height: 100vh;
 	width: 100vw;
-}
-
-@keyframes gradient {
-	0% {
-
-	}
-	50% {
-
-	}
-	100% {
-
-	}
 }
 
 main {
@@ -76,7 +64,11 @@ main {
 a {
 	cursor: pointer;
 	text-decoration: none;
-	color: var(--black);
+	color: var(--blue);
+}
+
+a:hover{
+	text-decoration: underline 2px;
 }
 
 img {
@@ -87,33 +79,40 @@ nav {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
-	margin-top: 0;
+	margin: 5px
 }
 
 nav a {
+	/* transition: transform 0.25s; */
 	flex: 1;
-	text-align: center;
-	background-color: var(--white);
 	font-weight: 900;
 	margin: 0;
-	padding: 10px;
-	border-bottom: 5px solid var(--white);
-	transition: border-bottom 0.25s, color 0.25s;
-}
-nav a:hover, nav a.active {
-	border-bottom-color: var(--blue);
-}
-nav a:hover{
-	color: var(--blue);
 }
 
 .center {
 	text-align: center;
 }
 
-.card {
-	background-color: var(--white);
+.card{
+	padding: 10px;
+	border: 1px solid var(--black);
 	border-radius: 5px;
+	color: var(--black);
+	background-color: var(--white);
+	text-decoration: none;
+	box-shadow: 5px 5px 0px 0px var(--black), 2px 2px 0px 0px var(--black);
+	position: relative;
+}
+
+.card.press:hover{
+	box-shadow: 2px 2px 0px 0px var(--black);
+	transform: translateX(3px) translateY(3px);
+	text-decoration: none;
+}
+
+.card.press:active, .card.press.active{
+	box-shadow: none;
+	transform: translateX(5px) translateY(5px);
 }
 
 .projects-list {
@@ -142,5 +141,44 @@ nav a:hover{
 
 .alternating-list li:nth-child(even){
     flex-direction: row-reverse;
+}
+
+.modal{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	border: none;
+	background-color: rgba(0, 0, 0, 0.7);
+	transition: opacity 0.4s;
+}
+
+.modal img{
+	max-height: 80%;
+	max-width: 80%;
+}
+
+.modal p{
+	color: var(--white);
+	font-weight: bold;
+	font-size: 20px;
+}
+
+canvas{
+	background-color: #000000;
+	margin: auto;
+}
+
+div:has(canvas){
+	width: 100%;
+	margin-top: 100px;
+	display: flex;
 }
 

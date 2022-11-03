@@ -1,41 +1,44 @@
-const scriptid = usePageScript();
+/** 
+ * Sets an img tag's src then returns a promise that resolves when the image loads 
+ * @param {HTMLImageElement} img - 
+ * @param {string} src - 
+ * @return {Promise<void>} 
+ */
+function imgLoad(img, src){
+    img.src = src;
+    return new Promise(res => img.onload = res)
+}
 
-// Nav Bar
-const navdata = [
-    ["Home",        "index"     ],
-    ["Projects",    "projects"  ],
-    ["Games",       "games"     ]
-];
+// Makes the nav buttons stay down after being clicked
+document.querySelectorAll("a.card.press").forEach(a => a.addEventListener("mousedown", e => e.target.className += " active"))
 
-const $navlink = (name, link) => $(
-    "a",
-    {
-        innerHTML:  name,
-        href:       link + ".html",
-        className:  link == PAGENAME? "active" : null
-    }
-)
+const modal = document.createElement("div");
+modal.className = "modal";
+modal.style.visibility = "hidden";
+modal.style.opacity = 0;
 
-$tag("nav")[0].append(...navdata.map(data => $navlink(...data)));
+const modalimg = document.createElement("img");
+const modalcap = document.createElement("p");
 
-const card = (title, desc, imgsrc, imgwidth) => $(
-    "li", {className: "card"}, [
+modal.append(modalimg)
+modal.append(modalcap)
+document.body.append(modal)
 
-        $("div", {}, [
-            $("img", {src: imgsrc, width: imgwidth})
-        ]),
+modal.addEventListener("click", e => {
+    modal.style.opacity = 0;
+    modal.style.visibility = "hidden";
+})
 
-        $("div", {}, [
-            $("h3", {}, [title]),
-            desc
-        ])
-    ]
-)
+document.querySelectorAll("img").forEach(img => {
+    img.addEventListener("click", e => {
 
-$$$(card);
+        modalcap.innerHTML = e.target.alt
 
-const projectslist = (data) => $(
-    "ul",
-    {className: "projects-list alternating-list"},
-    data.map(data => card(...data))
-)
+        imgLoad(modalimg, e.target.src)
+            .then(() => {
+                modal.style.visibility = "visible";
+                modal.style.opacity = 1
+            })
+        
+    })
+})
