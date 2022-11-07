@@ -17,6 +17,8 @@
 	--white: 	#fffaf5;
 	--black: 	#000000;
 
+	--gradient: linear-gradient(135deg, var(--orange) 0%, var(--red) 100%);
+
 	--card-offset: 5px
 }
 
@@ -31,7 +33,7 @@
 
 body {
     background: var(--orange);
-	background: linear-gradient(135deg, var(--orange) 0%, var(--red) 100%);
+	background: var(--gradient);
 	color: var(--black);
 	font-family: Nexa;
 	margin: 0;
