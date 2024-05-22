@@ -4,48 +4,57 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Home</title>
 		<link rel="stylesheet" type="text/css" href="style.css">
+		<meta name="view-transition" content="same-origin" />
 
-		<meta property="og:site_name" content="Ofikatiramene">
+
+		<meta property="og:site_name" content="og site name">
 		<meta property="og:url" content="https://harrysutton.github.io/">
-		<meta property="og:title" content="Blog">
+		<meta property="og:title" content="og title">
 		<meta property="og:type" content="website">
-		<meta property="og:description" content="Ofikatiramene">
+		<meta property="og:description" content="og desc">
 		<meta property="og:image" content="https://harrysutton.github.io/thumbnail.png">
 		<meta property="og:image:width" content="625">
 		<meta property="og:image:height" content="339">
-		<meta name="twitter:site" content="@OFIKATIRAMENE">
+		<meta name="twitter:site" content="@twitter_site">
 		<meta name="twitter:card" content="summary_large_image">
-		<meta name="twitter:title" content="Blog">
-		<meta name="twitter:description" content="Griffiths Brothers Distillery">
+		<meta name="twitter:title" content="twitter title">
+		<meta name="twitter:description" content="twitter desc">
 	</head>
-	<body>
-		<nav>
-			<a href="/" class="card press active">Home</a>
-			<a href="/projects" class="card press">Projects</a>
-			<a href="/games" class="card press">Games</a>
-		</nav>
-
-		<main>
-			<div class="card">
-				<ul>
-					<li>
-						<h4>JavaScript</h4>
-						<ul>
-							<li>React</li>
-							<li>ReactNative</li>
-							<li>JQuery</li>
-						</ul>
-					</li>
-					<li>
-						<h4>Python</h4>
-						<ul>
-							<li>Flask</li>
-							<li>Pandas</li>
-						</ul>
-					</li>
-				</ul>
+	<body class="home">
+		<div class="grid">
+			<div class="screen" style="background-color: #8e102b; view-transition-name: about;">
+				<a href="/about/">
+					<h2 style="view-transition-name: about-title;">ABOUT</h2>
+				</a>
 			</div>
-		</main>
+			<div class="screen" style="background-color: #5b547c">
+			
+			</div>
+			<div class="screen" style="background-color: #875eac; view-transition-name: school;">
+				<a href="/school/">
+					<h2>SCHOOL</h2>
+				</a>
+			</div>
+			<div class="screen" style="background-color: #6f355c">
+			
+			</div>
+			<div class="screen" style="background-color: #2a4b99">
+	
+			</div>
+			<div class="screen" style="background-color: #1d5ea1; view-transition-name: work;">
+				<a href="/work/">
+					<h2>WORK</h2>
+				</a>
+			</div>
+			<div class="screen" style="background-color: #502e65;">
+			
+			</div>
+			<div class="screen" style="background-color: #839cc4; view-transition-name: projects;">
+				<a href="/projects/">
+					<h2>PROJECTS</h2>
+				</a>
+			</div>
+		</div>
 
 		<script src="script.js"></script>
 	</body>
