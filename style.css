@@ -131,10 +131,22 @@ dialog img {
 } */
 
 :root {
-	--gules: #e42b16;
-	--argent: #ffffff;
-	--sable: #111111;
-	--or: #ffd700;
+	--concrete-light: #ebe5d9;
+	--concrete-dark: #d7d1c5;
+	--black: #1c1c1e;
+	--white: #ebebf2;
+
+	--red: #c85858;
+	--yellow: #dad171;
+	--blue: #5387bc;
+
+	--body-font-stack: Helvetica, sans-serif;
+	--heading-font-stack: "Bebas Neue", var(--body-font-stack);
+	--serif-font-stack: Georgia, serif;
+	
+}
+*, *::before, *::after {
+	box-sizing: border-box;
 }
 
 html {
@@ -142,53 +154,75 @@ html {
 }
 
 body {
-	background-color: var(--argent);
-	font-family: Helvetica, sans-serif;
-	color: var(--gules);
-	font-size: 20px;
+	background-color: var(--concrete-light);
+	font-family: var(--body-font-stack);
+	color: var(--black);
+	font-size: 30px;
 	margin: 0;
 }
 
-main {
-	height: 100vh;
+header {
+	background-color: var(--black);
+	position: fixed;
+	inset: 0;
+	right: unset;
+	width: 200px;
+	transition: width .5s;
+	z-index: 999;
+	border-right: 2px solid var(--black);
+	overflow: hidden;
+	padding: 20px 0 ;
+}
+
+article {
+	min-height: 100vh;
+	margin-left: 200px;
 	position: relative;
-	background-color: var(--gules);
-	color: var(--argent);
+	background-color: var(--black);
+	color: var(--black);
 }
 
 menu {
 	list-style: none;
 	padding: 0;
 	margin: 0;
-	position: absolute;
-	bottom: 20px;
-	left: 20px
+	width: auto;
+	font-family: "Bebas Neue";
+}
+menu li {
+	padding: 30px 10px 5px 30px;
+	text-align: right;
+	margin: 10px;
+	border: 3px solid currentColor;
+	border-bottom-right-radius: 10px;
+	background-color: #d6cec4;
+	color: #5d5953;
+	transition: background-color .3s, color .3s;
+}
+menu li:nth-child(1):hover {
+	background-color: #f05500; 
+	color: #5e2100;
+}
+menu li:nth-child(2):hover {
+	background-color: #2192ff; 
+	color: #072d53;
+}
+menu li:nth-child(3):hover {
+	background-color: gold; 
+	color: darkgoldenrod;
 }
 
-::selection {
-	background-color: var(--sable);
-	color: var(--or);
-}
-
-h1, h2, menu li {
+h1, h2 {
 	margin: 0;
-	font-family: "Bebas Neue", Helvetica, sans-serif;
+	font-family: var(--heading-font-stack);
 }
 h1 {
 	font-size: 200px;
 	position: absolute;
 	left: 20px;
 	top: 20px;
-	/* background-color: var(--sable);
-	padding: .05em .2em .0em; */
-	background: url(https://loremflickr.com/900/240) 50% 50% var(--sable);
-	background-clip: text;
-	-webkit-background-clip: text;
-	color: transparent;
-	filter: grayscale(1) contrast(2) url(filter.svg#color);
-	width: fit-content;
 }
-h2, menu li {
+h2 {
 	font-size: 100px;
 	font-weight: normal;
 }
@@ -200,10 +234,6 @@ a {
 
 label, a {
 	cursor: pointer;
-
-	&:hover {
-		color: var(--sable);
-	}
 }
 
 img {
@@ -215,26 +245,21 @@ section {
 	min-height: 100vh;
 }
 
-.sable-or {
-	background-color: var(--sable);
-	color: var(--or);
-}
-
-#about {
+.projects {
+	list-style: none;
+	padding: 0;
 	display: grid;
-	grid-template-columns: 2fr 1fr;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 20px;
 }
-
-/* input[type=radio] {
-	display: none;
+.projects li {
+	height: 500px;
+	background-color: var(--concrete-dark);
+	border-radius: 20px;
 }
-
-section {
-	transition: height .2s;
-	overflow: hidden;
-	height: 0;
+@starting-style {
+	.projects li {
+		scale: 0;
+		rotate: -20deg;
+	}
 }
-
-label:has(input:checked) + section {
-	height: calc-size(auto);
-} */
